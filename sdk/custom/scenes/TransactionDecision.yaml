@@ -1,0 +1,57 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+conditionalEvents:
+- condition: scene.slots.status == "FINAL" && session.params.TransactionDecision.transactionDecision
+    == "ORDER_ACCEPTED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Transaction completed! Your order $session.params.TransactionDecision.order.merchantOrderId
+                is all set!
+    webhookHandler: update_order
+  transitionToScene: actions.scene.END_CONVERSATION
+- condition: scene.slots.status == "FINAL" && session.params.TransactionDecision.transactionDecision
+    == "ORDER_REJECTED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Looks like you don't want to order anything. Goodbye.
+  transitionToScene: actions.scene.END_CONVERSATION
+- condition: scene.slots.status == "FINAL"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Transaction failed with status $session.params.TransactionDecision.transactionDecision
+  transitionToScene: actions.scene.END_CONVERSATION
+onEnter:
+  webhookHandler: prepare_order
+slots:
+- commitBehavior:
+    writeSessionParam: TransactionDecision
+  config: $session.params.order
+  defaultValue:
+    sessionParam: TransactionDecision
+  name: TransactionDecision
+  required: true
+  type:
+    name: actions.type.TransactionDecisionValue

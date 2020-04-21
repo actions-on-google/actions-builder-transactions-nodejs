@@ -1,0 +1,49 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+conditionalEvents:
+- condition: scene.slots.status == "FINAL" && session.params.TransactionDeliveryAddress.userDecision
+    == "ACCEPTED"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: Great! Your order will be delivered to $session.params.TransactionDeliveryAddress.location.postalAddress.locality
+                $session.params.TransactionDeliveryAddress.location.postalAddress.administrativeArea
+                $session.params.TransactionDeliveryAddress.location.postalAddress.regionCode
+                $session.params.TransactionDeliveryAddress.location.postalAddress.postalCode
+  transitionToScene: TransactionDecision
+- condition: scene.slots.status == "FINAL"
+  handler:
+    staticPrompt:
+      candidates:
+      - promptResponse:
+          firstSimple:
+            variants:
+            - speech: I failed to get your delivery address.
+  transitionToScene: actions.scene.END_CONVERSATION
+slots:
+- commitBehavior:
+    writeSessionParam: TransactionDeliveryAddress
+  config:
+    '@type': type.googleapis.com/google.actions.v2.DeliveryAddressValueSpec
+    addressOptions:
+      reason: To know where to send the order
+  defaultValue:
+    sessionParam: TransactionDeliveryAddress
+  name: TransactionDeliveryAddress
+  required: true
+  type:
+    name: actions.type.DeliveryAddressValue
