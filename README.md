@@ -4,7 +4,7 @@ This sample demonstrates the physical good transactions for Google Assistant Act
 
 *:warning: Caution: A section of this sample currently makes use of the Google Pay API. Currently, Google is working with a limited number of partners that can get access to the production Google Pay API. If you're not one of those partners, you're welcome to read the test the integration using the sandbox environment. Alternatively, you can use the merchant payment option to when making transactions.*
 
-*:warning: Warning: Due to new regulatory requirements, transaction functionalities for Conversational Actions will not be available in the following countries after May 1, 2022: Denmark, France, Germany, Italy, the Netherlands, Norway, Spain, Sweden, Poland*
+*:warning: Warning: Due to new regulatory requirements, transaction functionalities for Conversational Actions are no longer available in the following countries: Denmark, France, Germany, Italy, the Netherlands, Norway, Spain, Sweden, Poland*
 
 ### Prerequisites
 1. Node.js and NPM
