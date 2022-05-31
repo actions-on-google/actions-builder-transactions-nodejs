@@ -1,5 +1,8 @@
 # Actions on Google: Physical Goods Transaction Sample
 
+*:warning: Warning: Conversational Actions will be deprecated on June 13, 2023. For more information, see [Conversational Actions Sunset](https://goo.gle/ca-sunset).*
+
+
 This sample demonstrates the physical good transactions for Google Assistant Actions.
 
 *:warning: Caution: A section of this sample currently makes use of the Google Pay API. Currently, Google is working with a limited number of partners that can get access to the production Google Pay API. If you're not one of those partners, you're welcome to read the test the integration using the sandbox environment. Alternatively, you can use the merchant payment option to when making transactions.*
